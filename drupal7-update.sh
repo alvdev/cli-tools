@@ -21,7 +21,8 @@ for user in ${users[@]}; do
     mkdir $public_html/d-backup
 
     echo
-    echo "> ($user) Move all core file to d-backup temp folder"        cd $public_html && mv CHANGELOG.txt COPYRIGHT.txt cron.php includes index.php INSTALL.mysql.txt INSTALL.pgsql.txt install.php INSTALL.txt LICENSE.txt MAINTAINERS.txt misc modules profiles scripts themes update.php UPGRADE.txt xmlrpc.php d-backup
+    echo "> ($user) Move all core file to d-backup temp folder"
+    cd $public_html && mv CHANGELOG.txt COPYRIGHT.txt cron.php includes index.php INSTALL.mysql.txt INSTALL.pgsql.txt install.php INSTALL.txt LICENSE.txt MAINTAINERS.txt misc modules profiles scripts themes update.php UPGRADE.txt xmlrpc.php d-backup
 
     echo
     echo "> ($user) Download and untar drupal file"
