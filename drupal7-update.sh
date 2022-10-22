@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Set variables
-users=(alvarogd artrosis)
+users=(user1 user2 user3)
 drupalversion=7.92
 drupal7file=https://ftp.drupal.org/files/projects/drupal-$drupalversion.tar.gz
 
