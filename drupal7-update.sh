@@ -1,8 +1,10 @@
 #!/bin/bash
 
 # Set variables
-users=(user1 user2 user3)
-drupalversion=7.92
+read -rp "Enter the list of users: " users
+read -rp "Enter the Drupal 7 version (Ex: 7.92): " drupalversion
+#users=(user1 user2 user3)
+#drupalversion=7.92
 drupal7file=https://ftp.drupal.org/files/projects/drupal-$drupalversion.tar.gz
 
 for user in ${users[@]}; do
