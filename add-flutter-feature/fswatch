@@ -1,0 +1,5 @@
+#!/bin/bash
+
+read -erp "Enter file name to watch: " filename
+
+fswatch -o ./bin | xargs -n2 sh -c "clear; dart ./$filename" 
