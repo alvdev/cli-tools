@@ -1,0 +1,17 @@
+include: package:lints/recommended.yaml
+
+linter:
+  rules:
+    - prefer_final_locals
+    - directives_ordering
+    - leading_newlines_in_multilines_strings
+    - unnecesary_breaks
+
+analyzer:
+  plugins:
+    # Riverpod linter
+    - custom_lint
+
+  language:
+    strict-raw-types: true
+    strict-casts: true
