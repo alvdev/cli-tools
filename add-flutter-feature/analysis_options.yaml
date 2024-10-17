@@ -4,8 +4,8 @@ linter:
   rules:
     - prefer_final_locals
     - directives_ordering
-    - leading_newlines_in_multilines_strings
-    - unnecesary_breaks
+    - leading_newlines_in_multiline_strings
+    - unnecessary_breaks
 
 analyzer:
   plugins:
@@ -17,4 +17,4 @@ analyzer:
     strict-casts: true
 
   exclude:
-    - lib/files/
+    - lib/files/**/*
