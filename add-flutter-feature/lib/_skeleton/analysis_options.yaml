@@ -3,9 +3,10 @@ include: package:lints/recommended.yaml
 linter:
   rules:
     - prefer_final_locals
-    - directives_ordering
     - leading_newlines_in_multiline_strings
     - unnecessary_breaks
+    # Ordering imports by vscode extentsion
+    # - directives_ordering
 
 analyzer:
   plugins:
@@ -15,3 +16,6 @@ analyzer:
   language:
     strict-raw-types: true
     strict-casts: true
+
+  exclude:
+  - lib/_skeleton/**/*
