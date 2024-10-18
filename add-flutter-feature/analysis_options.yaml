@@ -18,4 +18,4 @@ analyzer:
     strict-casts: true
 
   exclude:
-    - lib/files/**/*
+  - lib/_skeleton/**/*
