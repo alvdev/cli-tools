@@ -19,6 +19,7 @@ void addConfigFiles() {
   'dart pub add envied'.start(detached: true);
   'dart pub add flutter_localizations --sdk=flutter'.start(detached: true);
   'dart pub add intl'.start(detached: true);
+  'dart pub add go_router'.start(detached: true);
 
   // copy files
   final configFolderFrom = p.relative('lib/_skeleton');
