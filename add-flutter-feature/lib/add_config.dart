@@ -29,6 +29,9 @@ void addConfigFiles() {
   'dart pub add go_router'.start(detached: true);
   print(cyan('\t-> Added Go Router package'));
 
+  'dart pub add flutter_riverpod'.start(detached: true);
+  print(cyan('\t-> Added Flutter Riverpod package'));
+
   'dart pub add flutter_svg'.start(detached: true);
   print(cyan('\t-> Added Flutter SVG package'));
 
