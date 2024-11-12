@@ -1,16 +1,11 @@
 import 'dart:io';
 import 'package:dcli/dcli.dart';
-import 'package:path/path.dart' as p;
+import 'package:path/path.dart';
 
 void addConfigFiles() {
   if (exists('lib/config')) {
     print(magenta('Config folder already exists'));
     exit(0);
-  }
-
-  if (exists('analysis_options.yaml')) {
-    print(blue('analysis_options.yaml already exists. Backup created'));
-    move('analysis_options.yaml', 'analysis_options.yaml.bak', overwrite: true);
   }
 
   // add dependencies
@@ -42,9 +37,31 @@ void addConfigFiles() {
   'dart pub add dev:json_serializable'.start(detached: true);
   print(cyan('\t-> Added Freezed packages'));
 
-  // copy files
-  final configFolderFrom = p.relative('lib/_skeleton');
-  copyTree(configFolderFrom, p.relative('./'));
+  // copy skeleton files
+  final exeBaseDir = File(Platform.script.toFilePath()).parent.parent.path;
+  final skeletonDir = '$exeBaseDir/lib/_skeleton/';
+  final skeletonRootFiles = find(
+    '*',
+    workingDirectory: skeletonDir,
+    recursive: false,
+  ).toList();
+
+  for (final f in skeletonRootFiles) {
+    if (exists(basename(f))) {
+      print(blue('${basename(f)} exists. Backup file created.'));
+      move(basename(f), '${basename(f)}.bak', overwrite: true);
+    }
+
+    print(magenta('Copying ${basename(f)}'));
+    copy(f, relative('./'), overwrite: true);
+  }
+
+  copyTree(
+    '$skeletonDir/lib/',
+    relative('lib/'),
+    overwrite: true,
+    filter: (f) => !f.contains('/features/'),
+  );
 
   print(green('Config files created successfully'));
 }
