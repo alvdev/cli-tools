@@ -2,9 +2,8 @@ import 'dart:io';
 import 'package:dcli/dcli.dart';
 import 'package:path/path.dart';
 import 'package:yaml_edit/yaml_edit.dart';
-// import 'package:yaml_edit/yaml_edit.dart';
 
-void addConfigFiles() {
+void addConfigFiles() async {
   if (exists('lib/config')) {
     print(magenta('Config folder already exists'));
     exit(0);
@@ -37,66 +36,69 @@ void addConfigFiles() {
   );
 
   // edit pubspec.yaml before adding packages.Otherwise it will fail
-  editPubspec('pubspec.yaml');
+  await editPubspec('pubspec.yaml');
 
   // Add dependencies after copying skeleton. Otherwise it will fail
   print(blue('Adding packages...'));
 
   try {
-    'flutter pub add dio'.start(detached: false);
-    print(cyan('\t-> Added Dio package'));
+    'flutter pub add dioss'.start(progress: Progress.devNull());
+    print(green('🟢 Added Dio package', bold: false));
   } catch (e) {
-    print(red('\t-> Failed to add Dio package: $e'));
+    print(red('🔴 Failed to add Dio package: ${e.errorMessage}'));
   }
 
   try {
-    'flutter pub add envied'.start(detached: false);
-    print(cyan('\t-> Added Envied package'));
+    'flutter pub add envied'.start(progress: Progress.devNull());
+    print(green('🟢 Added Envied package', bold: false));
   } catch (e) {
-    print(red('\t-> Failed to add Envied package: $e'));
+    print(red('🔴 Failed to add Envied package: ${e.errorMessage}'));
   }
 
   try {
-    'flutter pub add flutter_localizations --sdk=flutter'.start(detached: true);
-    'flutter pub add intl'.start(detached: true);
-    print(cyan('\t-> Added Internationalization packages'));
+    'flutter pub add flutter_localizations --sdk=flutter'
+        .start(progress: Progress.devNull());
+    'flutter pub add intl'.start(progress: Progress.devNull());
+    print(green('🟢 Added Internationalization packages', bold: false));
   } catch (e) {
-    print(red('\t-> Failed to add Internationalization packages: $e'));
+    print(red(
+        '🔴 Failed to add Internationalization packages: ${e.errorMessage}'));
   }
 
   try {
-    'flutter pub add go_router'.start(detached: true);
-    print(cyan('\t-> Added Go Router package'));
+    'flutter pub add go_router'.start(progress: Progress.devNull());
+    print(green('🟢 Added Go Router package', bold: false));
   } catch (e) {
-    print(red('\t-> Failed to add Go Router package: $e'));
+    print(red('🔴 Failed to add Go Router package: ${e.errorMessage}'));
   }
 
   try {
-    'flutter pub add flutter_riverpod'.start(detached: true);
-    print(cyan('\t-> Added Flutter Riverpod package'));
+    'flutter pub add flutter_riverpod'.start(progress: Progress.devNull());
+    print(green('🟢 Added Flutter Riverpod package', bold: false));
   } catch (e) {
-    print(red('\t-> Failed to add Flutter Riverpod package: $e'));
+    print(red('🔴 Failed to add Flutter Riverpod package: ${e.errorMessage}'));
   }
 
   try {
-    'flutter pub add flutter_svg'.start(detached: true);
-    print(cyan('\t-> Added Flutter SVG package'));
+    'flutter pub add flutter_svg'.start(progress: Progress.devNull());
+    print(green('🟢 Added Flutter SVG package', bold: false));
   } catch (e) {
-    print(red('\t-> Failed to add Flutter SVG package: $e'));
+    print(red('🔴 Failed to add Flutter SVG package: ${e.errorMessage}'));
   }
 
   try {
-    'flutter pub add freezed_annotation'.start(detached: true);
-    'flutter pub add dev:build_runner'.start(detached: true);
-    'flutter pub add dev:freezed'.start(detached: true);
-    'flutter pub add add json_annotation'.start(detached: true);
-    'flutter pub add dev:json_serializable'.start(detached: true);
-    print(cyan('\t-> Added Freezed packages'));
+    'flutter pub add freezed_annotation'.start(progress: Progress.devNull());
+    'flutter pub add dev:build_runner'.start(progress: Progress.devNull());
+    'flutter pub add dev:freezed'.start(progress: Progress.devNull());
+    'flutter pub add add json_annotation'.start(progress: Progress.devNull());
+    'flutter pub add dev:json_serializable'.start(progress: Progress.devNull());
+    print(green('🟢 Added Freezed packages', bold: false));
   } catch (e) {
-    print(red('\t-> Failed to add Freezed packages: $e'));
+    print(red('🔴 Failed to add Freezed packages: ${e.errorMessage}'));
   }
 
   print(green('Config files created successfully'));
+  exit(0);
 }
 
 Future<void> editPubspec(String path) async {
@@ -112,5 +114,9 @@ Future<void> editPubspec(String path) async {
     editor.update(['flutter'], {'generate': true});
   }
 
-  file.writeAsString(editor.toString());
+  await file.writeAsString(editor.toString());
+}
+
+extension PackagesError on Object {
+  String get errorMessage => toString().split('\n').first;
 }
