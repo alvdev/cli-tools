@@ -11,12 +11,12 @@ void main() {
 
   const options = ['Create config files', 'Create a new feature'];
   final selected = menu(
-    'Select an option:',
     options: options,
+    '\nSelect an option:',
   );
 
   final isConfirmedOption = confirm(
-    "You're going to ${orange(selected.toLowerCase())}. Are you sure?",
+    "\nYou're going to ${orange(selected.toLowerCase())}. Are you sure?",
     defaultValue: false,
   );
   if (!isConfirmedOption) exit(0);
