@@ -1,41 +1,14 @@
 import 'dart:io';
 import 'package:dcli/dcli.dart';
 import 'package:path/path.dart';
+import 'package:yaml_edit/yaml_edit.dart';
+// import 'package:yaml_edit/yaml_edit.dart';
 
 void addConfigFiles() {
   if (exists('lib/config')) {
     print(magenta('Config folder already exists'));
     exit(0);
   }
-
-  // add dependencies
-  print(blue('Adding packages...'));
-
-  'dart pub add dio'.start(detached: true);
-  print(cyan('\t-> Added Dio package'));
-
-  'dart pub add envied'.start(detached: true);
-  print(cyan('\t-> Added Envied package'));
-
-  'dart pub add flutter_localizations --sdk=flutter'.start(detached: true);
-  'dart pub add intl'.start(detached: true);
-  print(cyan('\t-> Added Internationalization packages'));
-
-  'dart pub add go_router'.start(detached: true);
-  print(cyan('\t-> Added Go Router package'));
-
-  'dart pub add flutter_riverpod'.start(detached: true);
-  print(cyan('\t-> Added Flutter Riverpod package'));
-
-  'dart pub add flutter_svg'.start(detached: true);
-  print(cyan('\t-> Added Flutter SVG package'));
-
-  'dart pub add freezed_annotation'.start(detached: true);
-  'dart pub add dev:build_runner'.start(detached: true);
-  'dart pub add dev:freezed'.start(detached: true);
-  'dart pub add add json_annotation'.start(detached: true);
-  'dart pub add dev:json_serializable'.start(detached: true);
-  print(cyan('\t-> Added Freezed packages'));
 
   // copy skeleton files
   final exeBaseDir = File(Platform.script.toFilePath()).parent.parent.path;
@@ -63,5 +36,53 @@ void addConfigFiles() {
     filter: (f) => !f.contains('/features/'),
   );
 
+  // edit pubspec.yaml before adding packages.Otherwise it will fail
+  editPubspec('pubspec.yaml');
+
+  // Add dependencies after copying skeleton. Otherwise it will fail
+  print(blue('Adding packages...'));
+
+  'flutter pub add dio'.start(detached: false);
+  print(cyan('\t-> Added Dio package'));
+
+  'flutter pub add envied'.start(detached: false);
+  print(cyan('\t-> Added Envied package'));
+
+  'flutter pub add flutter_localizations --sdk=flutter'.start(detached: true);
+  'flutter pub add intl'.start(detached: true);
+  print(cyan('\t-> Added Internationalization packages'));
+
+  'flutter pub add go_router'.start(detached: true);
+  print(cyan('\t-> Added Go Router package'));
+
+  'flutter pub add flutter_riverpod'.start(detached: true);
+  print(cyan('\t-> Added Flutter Riverpod package'));
+
+  'flutter pub add flutter_svg'.start(detached: true);
+  print(cyan('\t-> Added Flutter SVG package'));
+
+  'flutter pub add freezed_annotation'.start(detached: true);
+  'flutter pub add dev:build_runner'.start(detached: true);
+  'flutter pub add dev:freezed'.start(detached: true);
+  'flutter pub add add json_annotation'.start(detached: true);
+  'flutter pub add dev:json_serializable'.start(detached: true);
+  print(cyan('\t-> Added Freezed packages'));
+
   print(green('Config files created successfully'));
+}
+
+Future<void> editPubspec(String path) async {
+  final file = File(path);
+  final yamlContent = await file.readAsString();
+  final editor = YamlEditor(yamlContent);
+
+  try {
+    if (editor.parseAt(['flutter', 'generate']) is Map) {
+      editor.update(['flutter', 'generate'], true);
+    }
+  } catch (e) {
+    editor.update(['flutter'], {'generate': true});
+  }
+
+  file.writeAsString(editor.toString());
 }
