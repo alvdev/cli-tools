@@ -42,31 +42,59 @@ void addConfigFiles() {
   // Add dependencies after copying skeleton. Otherwise it will fail
   print(blue('Adding packages...'));
 
-  'flutter pub add dio'.start(detached: false);
-  print(cyan('\t-> Added Dio package'));
+  try {
+    'flutter pub add dio'.start(detached: false);
+    print(cyan('\t-> Added Dio package'));
+  } catch (e) {
+    print(red('\t-> Failed to add Dio package: $e'));
+  }
 
-  'flutter pub add envied'.start(detached: false);
-  print(cyan('\t-> Added Envied package'));
+  try {
+    'flutter pub add envied'.start(detached: false);
+    print(cyan('\t-> Added Envied package'));
+  } catch (e) {
+    print(red('\t-> Failed to add Envied package: $e'));
+  }
 
-  'flutter pub add flutter_localizations --sdk=flutter'.start(detached: true);
-  'flutter pub add intl'.start(detached: true);
-  print(cyan('\t-> Added Internationalization packages'));
+  try {
+    'flutter pub add flutter_localizations --sdk=flutter'.start(detached: true);
+    'flutter pub add intl'.start(detached: true);
+    print(cyan('\t-> Added Internationalization packages'));
+  } catch (e) {
+    print(red('\t-> Failed to add Internationalization packages: $e'));
+  }
 
-  'flutter pub add go_router'.start(detached: true);
-  print(cyan('\t-> Added Go Router package'));
+  try {
+    'flutter pub add go_router'.start(detached: true);
+    print(cyan('\t-> Added Go Router package'));
+  } catch (e) {
+    print(red('\t-> Failed to add Go Router package: $e'));
+  }
 
-  'flutter pub add flutter_riverpod'.start(detached: true);
-  print(cyan('\t-> Added Flutter Riverpod package'));
+  try {
+    'flutter pub add flutter_riverpod'.start(detached: true);
+    print(cyan('\t-> Added Flutter Riverpod package'));
+  } catch (e) {
+    print(red('\t-> Failed to add Flutter Riverpod package: $e'));
+  }
 
-  'flutter pub add flutter_svg'.start(detached: true);
-  print(cyan('\t-> Added Flutter SVG package'));
+  try {
+    'flutter pub add flutter_svg'.start(detached: true);
+    print(cyan('\t-> Added Flutter SVG package'));
+  } catch (e) {
+    print(red('\t-> Failed to add Flutter SVG package: $e'));
+  }
 
-  'flutter pub add freezed_annotation'.start(detached: true);
-  'flutter pub add dev:build_runner'.start(detached: true);
-  'flutter pub add dev:freezed'.start(detached: true);
-  'flutter pub add add json_annotation'.start(detached: true);
-  'flutter pub add dev:json_serializable'.start(detached: true);
-  print(cyan('\t-> Added Freezed packages'));
+  try {
+    'flutter pub add freezed_annotation'.start(detached: true);
+    'flutter pub add dev:build_runner'.start(detached: true);
+    'flutter pub add dev:freezed'.start(detached: true);
+    'flutter pub add add json_annotation'.start(detached: true);
+    'flutter pub add dev:json_serializable'.start(detached: true);
+    print(cyan('\t-> Added Freezed packages'));
+  } catch (e) {
+    print(red('\t-> Failed to add Freezed packages: $e'));
+  }
 
   print(green('Config files created successfully'));
 }
