@@ -98,6 +98,13 @@ void addConfigFiles() async {
     print(red('⯀ Failed to add Freezed packages: ${e.errorMessage}'));
   }
 
+  try {
+    'dart run build_runner build'.start(progress: Progress.devNull());
+    print(green('⯀ Built Freezed classes', bold: false));
+  } catch (e) {
+    print(red('⯀ Failed to build Freezed classes: ${e.errorMessage}'));
+  }
+
   print(green('\nConfig files created successfully', bold: false));
   exit(0);
 }
