@@ -4,6 +4,13 @@ import 'package:add_flutter_feature/add_config.dart';
 import 'package:add_flutter_feature/add_feature.dart';
 
 void main() {
+  'clear'.run;
+  print('''
+###############################################
+### Welcome to the Add Flutter Feature CLI! ###
+###############################################
+  ''');
+  
   if (!exists('pubspec.yaml')) {
     print('Please run this script from the root of your Flutter project');
     exit(0);

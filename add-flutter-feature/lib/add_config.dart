@@ -18,14 +18,14 @@ void addConfigFiles() {
     recursive: false,
   ).toList();
 
-  print(white('\n⯀\n⯀ Copying files...\n⯀'));
+  print(white('\n\n⯀ Copying files...\n'));
   for (final f in skeletonRootFiles) {
     if (exists(basename(f))) {
-      print(blue('⯀\n⯀ ${basename(f)} exists. Backup file created.'));
+      print(blue('⯀ ${basename(f)} exists. Backup file created.'));
       move(basename(f), '${basename(f)}.bak', overwrite: true);
     }
 
-    print(green('⯀ ${basename(f)} created', bold: false));
+    print(green('⯀ ${basename(f)} created\n', bold: false));
     copy(f, relative('./'), overwrite: true);
   }
 
@@ -35,15 +35,16 @@ void addConfigFiles() {
     overwrite: true,
     filter: (f) => !f.contains('/features/'),
   );
+  print(green('⯀ lib folder created', bold: false));
 
   // edit pubspec.yaml before adding packages.Otherwise it will fail
   editYaml();
 
   // Add dependencies after copying skeleton. Otherwise it will fail
-  print(white('\n⯀\n⯀ Adding packages...\n⯀'));
+  print(white('\n\n⯀ Adding packages...\n'));
 
   try {
-    'flutter pub add dio'.start();
+    'flutter pub add dio'.start(progress: Progress.devNull());
     print(green('⯀ Added Dio package', bold: false));
   } catch (e) {
     print(red('⯀ Failed to add Dio package: ${e.errorMessage}'));
@@ -105,7 +106,7 @@ void addConfigFiles() {
     print(red('⯀ Failed to build Freezed classes: ${e.errorMessage}'));
   }
 
-  print(green('\nConfig files created successfully', bold: false));
+  print(white('\n👍 Config files created successfully', bold: true));
   exit(0);
 }
 
@@ -120,7 +121,7 @@ void editYaml() {
   editor.update(['flutter', 'assets'], ['assets/', 'assets/images/']);
 
   filePath.write(editor.toString());
-  print(green('pubspec.yaml updated successfully'));
+  print(green('⯀ pubspec.yaml updated', bold: false));
 }
 
 extension PackagesError on Object {
