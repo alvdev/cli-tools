@@ -47,7 +47,7 @@ void addConfigFiles() {
     'flutter pub add dio'.start(progress: Progress.devNull(), runInShell: true);
     print(green('⯀ Added Dio package', bold: false));
   } catch (e) {
-    print(red('⯀ Failed to add Dio package: ${e.errorMessage}'));
+    print(red('⯀ Failed to add Dio package ${e.errorMessage}'));
   }
 
   try {
@@ -55,7 +55,7 @@ void addConfigFiles() {
         .start(progress: Progress.devNull(), runInShell: true);
     print(green('⯀ Added Envied package', bold: false));
   } catch (e) {
-    print(red('⯀ Failed to add Envied package: ${e.errorMessage}'));
+    print(red('⯀ Failed to add Envied package ${e.errorMessage}'));
   }
 
   try {
@@ -66,7 +66,7 @@ void addConfigFiles() {
     print(green('⯀ Added Internationalization packages', bold: false));
   } catch (e) {
     print(red(
-        '⯀ Failed to add Internationalization packages: ${e.errorMessage}'));
+        '⯀ Failed to add Internationalization packages ${e.errorMessage}'));
   }
 
   try {
@@ -74,7 +74,7 @@ void addConfigFiles() {
         .start(progress: Progress.devNull(), runInShell: true);
     print(green('⯀ Added Go Router package', bold: false));
   } catch (e) {
-    print(red('⯀ Failed to add Go Router package: ${e.errorMessage}'));
+    print(red('⯀ Failed to add Go Router package ${e.errorMessage}'));
   }
 
   try {
@@ -82,7 +82,7 @@ void addConfigFiles() {
         .start(progress: Progress.devNull(), runInShell: true);
     print(green('⯀ Added Flutter Riverpod package', bold: false));
   } catch (e) {
-    print(red('⯀ Failed to add Flutter Riverpod package: ${e.errorMessage}'));
+    print(red('⯀ Failed to add Flutter Riverpod package ${e.errorMessage}'));
   }
 
   try {
@@ -90,7 +90,7 @@ void addConfigFiles() {
         .start(progress: Progress.devNull(), runInShell: true);
     print(green('⯀ Added Flutter SVG package', bold: false));
   } catch (e) {
-    print(red('⯀ Failed to add Flutter SVG package: ${e.errorMessage}'));
+    print(red('⯀ Failed to add Flutter SVG package ${e.errorMessage}'));
   }
 
   try {
@@ -106,7 +106,7 @@ void addConfigFiles() {
         .start(progress: Progress.devNull(), runInShell: true);
     print(green('⯀ Added Freezed packages', bold: false));
   } catch (e) {
-    print(red('⯀ Failed to add Freezed packages: ${e.errorMessage}'));
+    print(red('⯀ Failed to add Freezed packages ${e.errorMessage}'));
   }
 
   try {
@@ -136,5 +136,12 @@ void editYaml() {
 }
 
 extension PackagesError on Object {
-  String get errorMessage => toString().split('\n').first;
+  String get errorMessage {
+    final output = toString().split('\n');
+    output.removeAt(0); // Remove command
+    output.removeAt(0); // Remove exit code
+    final newOutput =
+        output.join().replaceAll('workingDirectory', '\nworkingDirectory');
+    return '\n$newOutput';
+  }
 }
