@@ -1,6 +1,6 @@
 {
-    "home": "Ecrã",
-    "@home": {
-        "description": "Ecrã inicial"
-    }
+  "home": "Ecrã",
+  "@home": {
+    "description": "Ecrã inicial"
+  }
 }
