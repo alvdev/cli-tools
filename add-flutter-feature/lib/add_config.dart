@@ -3,7 +3,7 @@ import 'package:dcli/dcli.dart';
 import 'package:path/path.dart';
 import 'package:yaml_edit/yaml_edit.dart';
 
-void addConfigFiles() async {
+void addConfigFiles() {
   if (exists('lib/config')) {
     print(magenta('Config folder already exists'));
     exit(0);
@@ -37,16 +37,16 @@ void addConfigFiles() async {
   );
 
   // edit pubspec.yaml before adding packages.Otherwise it will fail
-  await editPubspec('pubspec.yaml');
+  editYaml();
 
   // Add dependencies after copying skeleton. Otherwise it will fail
   print(white('\n⯀\n⯀ Adding packages...\n⯀'));
 
   try {
-    'flutter pub add dio'.start(progress: Progress.devNull());
+    'flutter pub add dio'.start();
     print(green('⯀ Added Dio package', bold: false));
   } catch (e) {
-    print(red(' Failed to add Dio package: ${e.errorMessage}'));
+    print(red('⯀ Failed to add Dio package: ${e.errorMessage}'));
   }
 
   try {
@@ -109,20 +109,18 @@ void addConfigFiles() async {
   exit(0);
 }
 
-Future<void> editPubspec(String path) async {
-  final file = File(path);
-  final yamlContent = await file.readAsString();
-  final editor = YamlEditor(yamlContent);
+void editYaml() {
+  final filePath = 'pubspec.yaml';
+  final fileContent = read(filePath).toParagraph();
+  final editor = YamlEditor(fileContent);
 
-  try {
-    if (editor.parseAt(['flutter', 'generate']) is Map) {
-      editor.update(['flutter', 'generate'], true);
-    }
-  } catch (e) {
-    editor.update(['flutter'], {'generate': true});
-  }
+  // Create keys if they don't exist
+  editor.update(['flutter'], {'generate': null, 'assets': null});
+  editor.update(['flutter', 'generate'], true);
+  editor.update(['flutter', 'assets'], ['assets/', 'assets/images/']);
 
-  await file.writeAsString(editor.toString());
+  filePath.write(editor.toString());
+  print(green('pubspec.yaml updated successfully'));
 }
 
 extension PackagesError on Object {
