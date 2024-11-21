@@ -1,3 +1,4 @@
 *.txt
+**/testing/
 *testing*.*
 *.bak
