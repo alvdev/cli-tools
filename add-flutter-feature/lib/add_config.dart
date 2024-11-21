@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:dcli/dcli.dart';
 import 'package:path/path.dart';
 import 'package:yaml_edit/yaml_edit.dart';
+import 'package:add_flutter_feature/replace_vars.dart';
 
 void addConfigFiles() {
   if (exists('lib/config')) {
@@ -35,6 +36,8 @@ void addConfigFiles() {
     overwrite: true,
     filter: (f) => !f.contains('/features/'),
   );
+
+  replaceVars();
   print(green('⯀ lib folder created', bold: false));
 
   // edit pubspec.yaml before adding packages.Otherwise it will fail
