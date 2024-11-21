@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:contradefensa/config/routes.dart';
+import 'package:{{ appPackageName }}/config/routes.dart';
 
 void main() => runApp(MyApp());
 
@@ -19,4 +19,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
