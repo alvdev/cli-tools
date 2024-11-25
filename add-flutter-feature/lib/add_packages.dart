@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:dcli/dcli.dart';
 
 void addPackages() {
@@ -47,8 +48,9 @@ void addPackages() {
             }
             errors[pkg.key]!.add(error);
           }),
-        runInShell: true,
-        terminal: true, // Fix for Windows
+        runInShell: Platform.isWindows, // Fir for windows
+        terminal: Platform.isWindows, // Fix for Windows
+        nothrow: Platform.isWindows, // Fix for Windows
       );
       print(green(msg, bold: false));
     } catch (e) {
