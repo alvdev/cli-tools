@@ -47,7 +47,9 @@ void addPackages() {
             }
             errors[pkg.key]!.add(error);
           }),
-          runInShell: true);
+        runInShell: true,
+        terminal: true, // Fix for Windows
+      );
       print(green(msg, bold: false));
     } catch (e) {
       print(red('$errMsg ${e.errorMessage}'));
