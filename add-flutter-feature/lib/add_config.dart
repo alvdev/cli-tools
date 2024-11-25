@@ -35,7 +35,8 @@ void addConfigFiles() {
     '$skeletonDir/lib/',
     relative('lib/'),
     overwrite: true,
-    filter: (f) => !f.contains('/features/'),
+    filter: (f) => !f.contains('/feature_skeleton/'),
+    // TODO: still copying features folder on Windows
   );
 
   replaceVars();
