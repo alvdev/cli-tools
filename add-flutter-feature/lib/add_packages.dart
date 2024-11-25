@@ -32,12 +32,12 @@ void addPackages() {
 
     if (pkg.key != 'Run Build Runner') {
       cmd = 'flutter pub add ${pkg.value}';
-      msg = '⯀ Adding ${pkg.key}';
+      msg = '⯀ Added ${pkg.key}';
       errMsg = '⯀ Failed to add ${pkg.value}';
     } else {
       cmd = 'dart run build_runner build';
-      msg = '⯀ Running Build Runner';
-      errMsg = '⯀ Failed to run Build Runner';
+      msg = '⯀ Code generation completed';
+      errMsg = '⯀ Failed to complete code generation';
     }
 
     try {
