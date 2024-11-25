@@ -41,13 +41,15 @@ void addPackages() {
 
     try {
       cmd.start(
-          progress: Progress(devNull, captureStdout: false, stderr: (error) {
+        progress: Progress(devNull, stderr: (error) {
             if (errors[pkg.key] == null) {
               errors[pkg.key] = [];
             }
             errors[pkg.key]!.add(error);
           }),
-          runInShell: true);
+        runInShell: true,
+        terminal: true, // Fix for Windows
+      );
       print(green(msg, bold: false));
     } catch (e) {
       print(red('$errMsg ${e.errorMessage}'));
