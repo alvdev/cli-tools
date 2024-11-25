@@ -7,8 +7,8 @@ void replaceVars() {
 
   find('*', workingDirectory: '$appRootDir/lib').forEach((file) {
     final content = read(file).toParagraph();
-    if (content.contains('{{ appName }}')) {
-      replace(file, '{{ appName }}', appPackageName);
+    if (content.contains('{{ appPackageName }}')) {
+      replace(file, '{{ appPackageName }}', appPackageName);
     }
   });
 }
