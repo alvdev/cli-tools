@@ -12,7 +12,7 @@ class AppTheme {
   );
 
   static const darkColorScheme = ColorScheme.dark(
-    primary: AppColor.white,
+    primary: Colors.white,
     onPrimary: AppColor.teal700,
     secondary: AppColor.green700,
     onSecondary: AppColor.yellow300,
