@@ -1,6 +1,11 @@
 {
+  "@@locale": "es",
   "home": "Inicio",
   "@home": {
     "description": "Pantalla de inicio"
+  },
+  "login": "Inicio de sesión",
+  "@login": {
+    "description": "Pantalla de inicio de sesión"
   }
 }
