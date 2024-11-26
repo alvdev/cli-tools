@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 class AppColor {
   // Whites
-  static const white = Color.fromRGBO(255, 255, 255, 1);
-  static const white300 = Color.fromRGBO(255, 255, 255, 0.3);
-  static const white500 = Color.fromRGBO(255, 255, 255, 0.5);
-  static const white700 = Color.fromRGBO(255, 255, 255, 0.7);
+  static const light300 = Color.fromRGBO(255, 255, 255, 0.3);
+  static const light500 = Color.fromRGBO(255, 255, 255, 0.5);
+  static const light700 = Color.fromRGBO(255, 255, 255, 0.7);
+  static const light900 = Color.fromRGBO(255, 255, 255, 0.9);
 
   // Grays
   static const gray300 = Color.fromRGBO(209, 213, 219, 1);
