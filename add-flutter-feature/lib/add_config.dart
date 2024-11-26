@@ -31,12 +31,17 @@ void addConfigFiles() {
     copy(f, relative('./'), overwrite: true);
   }
 
+  // Copy skeleton folders
+  if (!exists('assets/images/')) {
+    createDir('assets', recursive: true);
+  }
+  copyTree('$skeletonDir/assets/', relative('assets/'), overwrite: true);
+
   copyTree(
     '$skeletonDir/lib/',
     relative('lib/'),
     overwrite: true,
     filter: (f) => !f.contains('/feature_skeleton/'),
-    // TODO: still copying features folder on Windows
   );
 
   replaceVars();
