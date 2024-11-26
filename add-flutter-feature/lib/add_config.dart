@@ -41,6 +41,7 @@ void addConfigFiles() {
     '$skeletonDir/lib/',
     'lib/',
     overwrite: true,
+    includeHidden: true,
     filter: (f) => !f.contains(join(separator, 'feature_skeleton')),
   );
 
