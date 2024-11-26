@@ -39,9 +39,9 @@ void addConfigFiles() {
 
   copyTree(
     '$skeletonDir/lib/',
-    relative('lib/'),
+    'lib/',
     overwrite: true,
-    filter: (f) => !f.contains('/feature_skeleton/'),
+    filter: (f) => !f.contains(join(separator, 'feature_skeleton')),
   );
 
   replaceVars();
