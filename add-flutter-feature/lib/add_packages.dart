@@ -4,7 +4,10 @@ import 'package:dcli/dcli.dart';
 void addPackages() {
   const Map<String, String> packages = {
     'Dio': 'dio',
+    
+    // Envied
     'Envied': 'envied',
+    'Envied Generator': 'dev:envied_generator',
 
     // Internationalization
     'Flutter Localizations': 'flutter_localizations --sdk=flutter',
