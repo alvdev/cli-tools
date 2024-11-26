@@ -3,7 +3,7 @@ import 'package:{{ appPackageName }}/features/home/home_screen.dart';
 import 'package:{{ appPackageName }}/features/login/login_screen.dart';
 
 final router = GoRouter(
-  initialLocation = '/login',
+  initialLocation: '/login',
   routes: [
     GoRoute(
       path: '/',
