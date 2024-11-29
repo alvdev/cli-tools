@@ -1,4 +1,5 @@
 import 'package:dcli/dcli.dart';
+import 'package:mycli/kirby/kits.dart';
 import 'package:mycli/main_menu.dart';
 
 void kirbyMenu() {
@@ -15,6 +16,8 @@ void kirbyMenu() {
     '<< Back',
   ];
   final selected = menu('\nSelect theme:', options: options);
+
+  if (selected == options[0]) installInfluencersKit();
 
   if (selected == options.last) mainMenu();
 }
