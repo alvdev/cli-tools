@@ -39,15 +39,10 @@ class CmsKit {
     }
   }
 
-  static void activate(String? projectDirName) {
-    // if (!exists(join(current, 'kirby'))) {
-    //   print(orange(
-    //       '\nNo Kirby project found.\nPlease, run "mycli" in Kirby project root directory.'));
-    //   exit(1);
-    // }
+  static void activate(String projectDirName) {
     print(white('\n⯀ Activating CMS in "$projectDirName"'));
 
-    final srcBasePath = join(projectDirName!, 'kirby', 'src');
+    final srcBasePath = join(projectDirName, 'kirby', 'src');
     final Map<String, dynamic> files = {
       'view': {
         'path': join(srcBasePath, 'Panel', 'View.php'),
