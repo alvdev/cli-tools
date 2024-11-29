@@ -39,7 +39,7 @@ class CmsKit {
     }
   }
 
-  void activate(String projectDirName) {
+  static void activate(String? projectDirName) {
     // if (!exists(join(current, 'kirby'))) {
     //   print(orange(
     //       '\nNo Kirby project found.\nPlease, run "mycli" in Kirby project root directory.'));
@@ -47,7 +47,7 @@ class CmsKit {
     // }
     print(white('\n⯀ Activating CMS in "$projectDirName"'));
 
-    final srcBasePath = join(current, projectDirName, 'kirby', 'src');
+    final srcBasePath = join(projectDirName!, 'kirby', 'src');
     final Map<String, dynamic> files = {
       'view': {
         'path': join(srcBasePath, 'Panel', 'View.php'),
@@ -104,5 +104,20 @@ ${red('There is no matches in ${basename(value['path'])} for:')}
         print(red('\nThere was an error: ${e.toString()}'));
       }
     });
+  }
+
+  static void update() {
+    if (!exists(join(current, 'kirby'))) {
+      print(orange(
+          '\nNo Kirby project found.\nPlease, run "mycli" in a Kirby project root directory.'));
+      return;
+    }
+
+    final projectDirName = dirname(basename(current));
+
+    print(white('\n⯀ Updating CMS in "$projectDirName"\n'));
+    'composer update'.run;
+
+    activate(projectDirName);
   }
 }
