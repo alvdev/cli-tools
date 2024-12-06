@@ -3,21 +3,29 @@ import 'package:path/path.dart';
 
 class CmsKit {
   final String kit;
+  String projectDirName = '';
 
   /// [kit] must be 'plain' or 'starter'
-  const CmsKit(this.kit);
+  CmsKit(this.kit);
+
+  String get _projectDirName => projectDirName = askProjectDirName();
+
+  String askProjectDirName() {
+    return ask(
+      '\nEnter name of the directory:',
+      toLower: true,
+      validator: Ask.regExp(r'^[a-z0-9._-]*$',
+          error:
+              'Only lowercase letters, numbers, periods, underscores and hyphens are allowed.'),
+    );
+  }
 
   /// Return the directory name of the installed project
   String install() {
     final String composerCmd = 'composer create-project getkirby/${kit}kit';
 
     while (true) {
-      final projectDirName = ask('\nEnter name of the directory:',
-          toLower: true,
-          validator: Ask.regExp(r'^[a-z0-9._-]*$',
-              error:
-                  'Only lowercase letters, numbers, periods, underscores and hyphens are allowed.'));
-
+      _projectDirName; // call _projectDirName getter to set projectDirName
       if (!exists(projectDirName)) {
         try {
           final isConfirmed = confirm(
@@ -39,7 +47,14 @@ class CmsKit {
     }
   }
 
-  static void activate(String projectDirName) {
+  void activate() {
+    // Check if install() was called. If not, the projectDirName is empty.
+    if (projectDirName.isEmpty) {
+      print(red(
+          '\nNo Kirby project found.\nPlease, run "mycli" in a Kirby project root directory.'));
+      return;
+    }
+
     print(white('\n⯀ Activating CMS in "$projectDirName"'));
 
     final srcBasePath = join(projectDirName, 'kirby', 'src');
@@ -101,18 +116,18 @@ ${red('There is no matches in ${basename(value['path'])} for:')}
     });
   }
 
-  static void update() {
+  void update() {
     if (!exists(join(current, 'kirby'))) {
       print(orange(
           '\nNo Kirby project found.\nPlease, run "mycli" in a Kirby project root directory.'));
       return;
     }
 
-    final projectDirName = dirname(basename(current));
+    projectDirName = dirname(basename(current));
 
     print(white('\n⯀ Updating CMS in "$projectDirName"\n'));
     'composer update'.run;
 
-    activate(projectDirName);
+    activate();
   }
 }

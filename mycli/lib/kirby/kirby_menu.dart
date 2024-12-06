@@ -7,20 +7,24 @@ void kirbyMenu() {
   'clear'.run;
   print('# Kirby project selector\n');
 
-  const options = [
+  final List<String> options = [
     'Influencers',
     'Tattoo shops',
     'Bars & restaurants',
     'Pubs & discos',
     'Real estate',
     'Dental clinics\n',
-    'Update CMS\n',
+    "Update CMS \t${cyan('(activation included)')}",
+    "Activate CMS\t${cyan('(activate only, no update)')}\n",
     '<< Back',
   ];
   final selected = menu('\nSelect theme:', options: options);
 
   if (selected == options[0]) installInfluencersKit();
-  if (selected == options[6]) CmsKit.update();
+
+  final kit = CmsKit('plain');
+  if (selected == options[6]) kit.update();
+  if (selected == options[7]) kit.activate();
 
   if (selected == options.last) mainMenu();
 }

@@ -3,7 +3,8 @@ import 'package:mycli/kirby/shared/cms_kit.dart';
 
 void installInfluencersKit() {
   final kit = CmsKit('plain');
-  CmsKit.activate(kit.install());
+  kit.install();
+  kit.activate();
 
   print(white('\n⯀ Installing Influencers kit...'));
   // TODO: install Influencers kit
