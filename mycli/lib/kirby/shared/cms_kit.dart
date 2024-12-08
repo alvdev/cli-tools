@@ -117,11 +117,7 @@ ${red('There is no matches in ${basename(value['path'])} for:')}
   }
 
   void update() {
-    if (!exists(join(current, 'kirby'))) {
-      print(orange(
-          '\nNo Kirby project found.\nPlease, run "mycli" in a Kirby project root directory.'));
-      return;
-    }
+    if (!isKirbyDir()) return;
 
     projectDirName = dirname(basename(current));
 
@@ -129,5 +125,15 @@ ${red('There is no matches in ${basename(value['path'])} for:')}
     'composer update'.run;
 
     activate();
+  }
+
+  bool isKirbyDir() {
+    if (!exists('kirby')) {
+      print(red(
+          '\nNo Kirby project found.\nPlease, run "mycli" in a Kirby project root directory.'));
+      return false;
+    }
+
+    return true;
   }
 }
