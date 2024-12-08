@@ -10,9 +10,16 @@ class CmsKit {
   CmsKit(this.kit);
 
   String get _projectDirName => projectDirName = askProjectDirName();
+
   void get kirbyDirNotFound {
     print(red(
         "\nNo Kirby project found.\nPlease, run \"mycli\" in a Kirby project root directory."));
+    exit(1);
+  }
+
+  void get kirbyDirAlreadyExists {
+    print(red(
+        "\nA Kirby project was found in this directory.\nPlease, run \"mycli\" in a new directory."));
     exit(1);
   }
 
@@ -28,6 +35,8 @@ class CmsKit {
 
   /// Return the directory name of the installed project
   String install() {
+    if (exists('kirby')) kirbyDirAlreadyExists;
+
     final String composerCmd = 'composer create-project getkirby/${kit}kit';
 
     while (true) {
