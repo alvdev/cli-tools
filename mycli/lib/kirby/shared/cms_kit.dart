@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:dcli/dcli.dart';
 import 'package:path/path.dart';
 
@@ -9,6 +10,11 @@ class CmsKit {
   CmsKit(this.kit);
 
   String get _projectDirName => projectDirName = askProjectDirName();
+  void get kirbyDirNotFound {
+    print(red(
+        "\nNo Kirby project found.\nPlease, run \"mycli\" in a Kirby project root directory."));
+    exit(1);
+  }
 
   String askProjectDirName() {
     return ask(
@@ -49,13 +55,14 @@ class CmsKit {
 
   void activate() {
     // Check if install() was called. If not, the projectDirName is empty.
-    if (projectDirName.isEmpty && !isKirbyDir()) return;
+    if (projectDirName.isEmpty && !exists('kirby')) kirbyDirNotFound;
 
+    // Take the project dir name from install() or pwd
     if (projectDirName.isNotEmpty) {
       print(
           white('\n⯀ Activating CMS in "${join(current, projectDirName)}"\n'));
     }
-    if (isKirbyDir()) {
+    if (exists('kirby')) {
       print(white('\n⯀ Activating CMS in "$current"'));
     }
 
@@ -119,7 +126,7 @@ ${red('There is no matches in ${basename(value['path'])} for:')}
   }
 
   void update() {
-    if (!isKirbyDir()) return;
+    if (!exists('kirby')) return;
 
     projectDirName = dirname(basename(current));
 
@@ -127,15 +134,5 @@ ${red('There is no matches in ${basename(value['path'])} for:')}
     'composer update'.run;
 
     activate();
-  }
-
-  bool isKirbyDir() {
-    if (!exists('kirby')) {
-      print(red(
-          '\nNo Kirby project found.\nPlease, run "mycli" in a Kirby project root directory.'));
-      return false;
-    }
-
-    return true;
   }
 }
