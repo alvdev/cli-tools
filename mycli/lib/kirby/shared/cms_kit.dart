@@ -72,7 +72,7 @@ class CmsKit {
           white('\n⯀ Activating CMS in "${join(current, projectDirName)}"\n'));
     }
     if (exists('kirby')) {
-      print(white('\n⯀ Activating CMS in "$current"'));
+      print(white('\n⯀ Activating CMS in "$current"\n'));
     }
 
     final srcBasePath = join(projectDirName, 'kirby', 'src');
@@ -105,33 +105,41 @@ class CmsKit {
       },
     };
 
-    files.forEach((key, value) {
-      try {
-        final content = read(value['path']).toParagraph();
+    // Needed to check the last entry to print a message
+    final entries = files.entries.toList();
 
-        if (content.contains(value['strOld'])) {
-          replace(value['path'], value['strOld'], value['strNew']);
-          if (key == 'license') {
-            replace(value['path'], value['strOld2'], value['strNew2']);
+    for (final entry in files.entries) {
+      try {
+        final content = read(entry.value['path']).toParagraph();
+
+        if (content.contains(entry.value['strOld'])) {
+          replace(entry.value['path'], entry.value['strOld'],
+              entry.value['strNew']);
+          if (entry.key == 'license') {
+            replace(entry.value['path'], entry.value['strOld2'],
+                entry.value['strNew2']);
           }
 
-          value['strOld'].allMatches(content).forEach((match) {
+          entry.value['strOld'].allMatches(content).forEach((match) {
             print("""
-${blue("\nExisting in ${basename(value['path'])}:")}
+${blue("\nExisting in ${basename(entry.value['path'])}:")}
   ${match.group(0)}
 ${blue("has been replaced with:")}
-  ${value['strNew']}""");
+  ${entry.value['strNew']}""");
           });
         } else {
           print("""
-${red('There is no matches in ${basename(value['path'])} for:')}
-  ${value['strOld'].toString()}
+${red('There is no matches in ${basename(entry.value['path'])} for:')}
+  ${entry.value['strOld'].toString()}
 """);
+          if (entry.key == entries.last.key) {
+            print(blue('This project seems to be already activated.'));
+          }
         }
       } catch (e) {
         print(red('\nThere was an error: ${e.toString()}'));
       }
-    });
+    }
   }
 
   void update() {
