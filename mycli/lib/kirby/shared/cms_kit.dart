@@ -49,13 +49,15 @@ class CmsKit {
 
   void activate() {
     // Check if install() was called. If not, the projectDirName is empty.
-    if (projectDirName.isEmpty) {
-      print(red(
-          '\nNo Kirby project found.\nPlease, run "mycli" in a Kirby project root directory.'));
-      return;
-    }
+    if (projectDirName.isEmpty && !isKirbyDir()) return;
 
-    print(white('\n⯀ Activating CMS in "$projectDirName"'));
+    if (projectDirName.isNotEmpty) {
+      print(
+          white('\n⯀ Activating CMS in "${join(current, projectDirName)}"\n'));
+    }
+    if (isKirbyDir()) {
+      print(white('\n⯀ Activating CMS in "$current"'));
+    }
 
     final srcBasePath = join(projectDirName, 'kirby', 'src');
     final Map<String, dynamic> files = {
