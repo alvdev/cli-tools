@@ -70,8 +70,7 @@ class CmsKit {
     if (projectDirName.isNotEmpty) {
       print(
           white('\n⯀ Activating CMS in "${join(current, projectDirName)}"\n'));
-    }
-    if (exists('kirby')) {
+    } else if (exists('kirby')) {
       print(white('\n⯀ Activating CMS in "$current"\n'));
     }
 
