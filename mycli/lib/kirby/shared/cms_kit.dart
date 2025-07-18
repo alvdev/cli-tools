@@ -65,7 +65,6 @@ class CmsKit {
   void activate() {
     // Check if install() was called. If not, the projectDirName is empty.
     if (projectDirName.isEmpty && !exists('kirby')) kirbyDirNotFound;
-
     // Take the project dir name from install() or pwd
     if (projectDirName.isNotEmpty) {
       print(
@@ -75,6 +74,7 @@ class CmsKit {
     }
 
     final srcBasePath = join(projectDirName, 'kirby', 'src');
+
     final Map<String, dynamic> files = {
       'view': {
         'path': join(srcBasePath, 'Panel', 'View.php'),
@@ -109,14 +109,17 @@ class CmsKit {
 
     for (final entry in files.entries) {
       try {
-        final content = read(entry.value['path']).toParagraph();
+        final content = File(entry.value['path']).readAsStringSync();
+        print(content);
 
         if (content.contains(entry.value['strOld'])) {
-          replace(entry.value['path'], entry.value['strOld'],
-              entry.value['strNew']);
+          final updatedContent =
+              content.replaceAll(entry.value['strOld'], entry.value['strNew']);
+          File(entry.value['path']).writeAsStringSync(updatedContent);
           if (entry.key == 'license') {
-            replace(entry.value['path'], entry.value['strOld2'],
-                entry.value['strNew2']);
+            final updatedContent = content.replaceAll(
+                entry.value['strOld2'], entry.value['strNew2']);
+            File(entry.value['path']).writeAsStringSync(updatedContent);
           }
 
           entry.value['strOld'].allMatches(content).forEach((match) {
@@ -128,7 +131,7 @@ ${blue("has been replaced with:")}
           });
         } else {
           print("""
-${red('There is no matches in ${basename(entry.value['path'])} for:')}
+${red('There is no matches in ${entry.value['path']} for:')}
   ${entry.value['strOld'].toString()}
 """);
           if (entry.key == entries.last.key) {
