@@ -74,6 +74,7 @@ class CmsKit {
     }
 
     final srcBasePath = join(projectDirName, 'kirby', 'src');
+    final pluginsBasePath = join(projectDirName, 'site', 'plugins');
 
     final Map<String, dynamic> files = {
       'view': {
@@ -102,6 +103,15 @@ class CmsKit {
         'strOld': 'Kirby Basic',
         'strNew': 'Professional',
       },
+      'dreamformLicense': {
+        'path': join(pluginsBasePath, 'kirby-dreamform', 'classes', 'Support',
+            'License.php'),
+        'strOld': RegExp(
+          r'if\s*\(\s*!\s*\$this->isSigned\s*\(\s*\)\s*\|\|\s*!\s*\$this->isComplete\s*\(\s*\)\s*\)\s*\{\s*return\s+false\s*;\s*\}',
+        ),
+        'strNew':
+            'if (!\$this->isSigned() || !\$this->isComplete()) {\n\t\t\treturn true;\n\t\t}',
+      }
     };
 
     // Needed to check the last entry to print a message
