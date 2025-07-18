@@ -81,20 +81,31 @@ class CmsKit {
         'path': join(srcBasePath, 'Panel', 'View.php'),
         'strOld': RegExp(
             r"'\$license'\s*=>\s*\$kirby->system\(\)->license\(\)->status\(\)->value\(\),"),
+        'strOldRaw':
+            '\$license => \$kirby->system()->license()->status()->value(),',
         'strNew': "'\$license' => '',",
       },
       'license': {
         'path': join(srcBasePath, 'Cms', 'License.php'),
-        'strOld': 'return \$this->type()->label();',
-        'strNew': 'return LicenseType::Basic->label();',
-        'strOld2': RegExp(
-            r'\$this->isMissing\(\)\s*===\s*true\s*=>\s*LicenseStatus::Missing,'),
-        'strNew2': "\$this->isMissing()  === true => LicenseStatus::Active,",
+        'strOld': RegExp(
+            r'if \(\$this->status\(\) === LicenseStatus::Missing\) \{\n\s*return LicenseType::Invalid->label\(\);\n\s*\}'),
+        'strOldRaw':
+            'if (\$this->status() === LicenseStatus::Missing) {\n      return LicenseType::Invalid->label();\n  }',
+        'strNew':
+            'if (\$this->status() === LicenseStatus::Active) {\n\t\t\treturn LicenseType::Basic->label();\n\t\t}',
+        'strNewRaw':
+            '\$this->status() === LicenseStatus::Active) {\n      return LicenseType::Basic->label();\n  }',
+        'strOld2':
+            RegExp(r'\$this->isMissing\(\)\s*=>\s*LicenseStatus::Missing,'),
+        'strOld2Raw': '\$this->isMissing()\t=> LicenseStatus::Missing',
+        'strNew2': "\$this->isMissing()\t=> LicenseStatus::Active,",
       },
       'licenseStatus': {
         'path': join(srcBasePath, 'Cms', 'LicenseStatus.php'),
         'strOld': RegExp(
             r"return\s+I18n::template\('license\.status\.'\s*\.\s*\$this->value\s*\.\s*'\.info',\s*\[\s*'date'\s*=>\s*\$end\s*\]\);"),
+        'strOldRaw':
+            'return I18n::template(\'license.status.\' . \$this->value . \'.info\', [\'date\' => \$end]);',
         'strNew':
             "return I18n::template('license.status.' . \$this->value . '.info', ['date' => date('J F, Y', strtotime('now'))]);",
       },
@@ -107,10 +118,13 @@ class CmsKit {
         'path': join(pluginsBasePath, 'kirby-dreamform', 'classes', 'Support',
             'License.php'),
         'strOld': RegExp(
-          r'if\s*\(\s*!\s*\$this->isSigned\s*\(\s*\)\s*\|\|\s*!\s*\$this->isComplete\s*\(\s*\)\s*\)\s*\{\s*return\s+false\s*;\s*\}',
-        ),
+            r'if\s*\(\s*!\s*\$this->isSigned\s*\(\s*\)\s*\|\|\s*!\s*\$this->isComplete\s*\(\s*\)\s*\)\s*\{\s*return\s+false\s*;\s*\}'),
+        'strOldRaw':
+            'if (!\$this->isSigned() || !\$this->isComplete()) {\n      return false;\n  }',
         'strNew':
             'if (!\$this->isSigned() || !\$this->isComplete()) {\n\t\t\treturn true;\n\t\t}',
+        'strNewRaw':
+            'if (!\$this->isSigned() || !\$this->isComplete()) {\n      return true;\n  }',
       }
     };
 
@@ -122,26 +136,38 @@ class CmsKit {
         final content = File(entry.value['path']).readAsStringSync();
 
         if (content.contains(entry.value['strOld'])) {
-          final updatedContent =
+          String updatedContent =
               content.replaceAll(entry.value['strOld'], entry.value['strNew']);
-          File(entry.value['path']).writeAsStringSync(updatedContent);
-          if (entry.key == 'license') {
-            final updatedContent = content.replaceAll(
+          if (entry.value.containsKey('strOld2')) {
+            updatedContent = updatedContent.replaceAll(
                 entry.value['strOld2'], entry.value['strNew2']);
-            File(entry.value['path']).writeAsStringSync(updatedContent);
           }
+          File(entry.value['path']).writeAsStringSync(updatedContent);
 
           entry.value['strOld'].allMatches(content).forEach((match) {
             print("""
-${blue("\nExisting in ${basename(entry.value['path'])}:")}
-  ${match.group(0)}
+${blue("Existing in ${entry.value['path']}:")}
+  ${entry.value['strOld'] is RegExp ? (entry.value['strOldRaw'] ?? entry.value['strOld']) : entry.value['strOld']}
 ${blue("has been replaced with:")}
-  ${entry.value['strNew']}""");
+  ${entry.value['strOld'] is RegExp ? (entry.value['strNewRaw'] ?? entry.value['strNew']) : entry.value['strNew']}
+            """);
           });
+
+          if (entry.value.containsKey('strOld2')) {
+            entry.value['strOld2'].allMatches(content).forEach((match) {
+              print("""
+${blue("Existing in ${entry.value['path']}:")}
+  ${entry.value['strOld2'] is RegExp ? (entry.value['strOld2Raw'] ?? entry.value['strOld2'].toString()) : entry.value['strOld2'].toString()}
+${blue("has been replaced with:")}
+  ${entry.value['strOld2'] is RegExp ? (entry.value['strNew2Raw'] ?? entry.value['strNew2']) : entry.value['strNew2']}
+              """);
+            });
+          }
         } else {
           print("""
 ${red('There is no matches in ${entry.value['path']} for:')}
-  ${entry.value['strOld'].toString()}
+  ${entry.value['strOld'] is RegExp ? (entry.value['strOldRaw'] ?? entry.value['strOld']) : entry.value['strOld']}
+${red('Nothing has been changed.')}
 """);
           if (entry.key == entries.last.key) {
             print(blue('This project seems to be already activated.'));
