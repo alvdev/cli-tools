@@ -110,7 +110,6 @@ class CmsKit {
     for (final entry in files.entries) {
       try {
         final content = File(entry.value['path']).readAsStringSync();
-        print(content);
 
         if (content.contains(entry.value['strOld'])) {
           final updatedContent =
