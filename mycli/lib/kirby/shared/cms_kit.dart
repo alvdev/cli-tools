@@ -125,6 +125,15 @@ class CmsKit {
             'if (!\$this->isSigned() || !\$this->isComplete()) {\n\t\t\treturn true;\n\t\t}',
         'strNewRaw':
             'if (!\$this->isSigned() || !\$this->isComplete()) {\n      return true;\n  }',
+      },
+      'detourRedirects': {
+        'path': join(pluginsBasePath, 'retour', 'index.js'),
+        'strOld': RegExp(
+            r'e\("k-button",\{attrs:\{link:"https://paypal.me/distantnative.*retour.system.support"\)\)\+"."\)\]\)'),
+        'strOldRaw':
+            'e("k-button",{attrs:{link:"https://paypal.me/distantnative/detour.system.support"}})+"."',
+        'strNew': '',
+        'strNewRaw': 'Removed green button from tabs',
       }
     };
 
